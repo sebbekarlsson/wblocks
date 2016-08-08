@@ -10,14 +10,6 @@ bool WebsiteCompiler::compile(Website * website) {
             + website->font["link"].get<std::string>() + "'>"
             );
 
-    std::vector<std::string> pages = website->site["pages"].get<std::vector<std::string>>();
-    for(auto i : pages) {
-        website->pages[
-            WebsiteCompiler::replace_word(i, ".json", "")
-        ] = website->html;
-    }
-
-
     website->generatePages();
     website->generateCSS();
 
@@ -27,7 +19,7 @@ bool WebsiteCompiler::compile(Website * website) {
 std::string WebsiteCompiler::replace_word(std::string text, std::string word, std::string replacement) {
     size_t start_pos = text.find(word);
     if(start_pos == std::string::npos)
-        return "";
+        return text;
     text.replace(start_pos, word.length(), replacement);
 
     return text;
