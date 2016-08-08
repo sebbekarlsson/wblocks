@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <regex>
 #include <unistd.h>
+#include <dirent.h>
 
 
 class Website {

@@ -12,6 +12,24 @@ Website::Website(std::string directory) {
             this->site["title"].get<std::string>().c_str(),
             S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
          );
+    mkdir(
+            this->site["title"].get<std::string>().append("/images").c_str(),
+            S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
+         );
+
+    /* move files from images to new images location */
+    std::cout << "[Initializing]: Moving images: " << std::endl;
+    DIR *dpdf;
+    struct dirent *epdf;
+    dpdf = opendir((this->dir + "/images").c_str());
+    if (dpdf != NULL){
+        while (epdf = readdir(dpdf)){
+            std::ifstream  src(this->dir + "/images/" + epdf->d_name, std::ios::binary);
+            std::ofstream  dst(this->site["title"].get<std::string>() + "/images/" + epdf->d_name,   std::ios::binary);
+            dst << src.rdbuf();
+        }
+    }
+    closedir(dpdf);
 
     ResourceManager::load("src/shards/html.html");
     ResourceManager::load("src/shards/style.css");
