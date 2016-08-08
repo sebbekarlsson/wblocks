@@ -17,7 +17,7 @@
                     "type": "module",
                     "source": "modules/text",
                     "args": [
-                        {"text": "<file processor='plugins/markdown'>shards/greetings.md</file>"}
+                        {"text": "{{shards/greeting.html}}"}
                     ]
                 }
             ] 

@@ -93,8 +93,15 @@ void Website::generatePages() {
 
                             for (auto iz : ii["args"]) {
                                 for (auto it = iz.begin(); it != iz.end(); ++it) {
-                                    std::cout << it.key() << " | " << it.value() << "\n";
-                                    module_html = this->replace_word(module_html, "{{"+it.key()+"}}", it.value());
+                                    std::string v = it.value();
+                                    if (v.find("{{") != std::string::npos) {
+                                        v = this->replace_word(v, "{{", "");
+                                        v = this->replace_word(v, "}}", "");
+                                        ResourceManager::load(this->dir + "/" + v);
+                                        v = ResourceManager::get(this->dir + "/" + v);
+                                    }
+
+                                    module_html = this->replace_word(module_html, "{{"+it.key()+"}}", v);
                                 }
                             }
                         }
