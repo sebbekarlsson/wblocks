@@ -28,7 +28,7 @@ Website::Website(std::string directory) {
         if (
                 ResourceManager::get(this->dir + "/" + i).empty() ||
                 ResourceManager::get(this->dir + "/" + i) == ""
-        ) { continue; }
+           ) { continue; }
         this->pages[
             this->replace_word(i, ".json", "")
         ] = ResourceManager::get(this->dir + "/" + i);
@@ -61,23 +61,59 @@ bool Website::addPage(std::string title, std::string content) {
 }
 
 void Website::generatePages() {
+    const std::regex r("\\{\\{(.*)}}");
+
+    this->addHeaderElement(
+            "<link rel='stylesheet' type='text/css' href='style.css'>"
+            );
+
     for(auto const &ent1 : pages) {
         //std::cout << ent1.first << std::endl;
         //std::cout << pages.at(ent1.first) << std::endl;
-        
 
+        std::string page_content = "";
         nlohmann::json page_json = nlohmann::json::parse(pages.at(ent1.first));
+
+        for(auto i : page_json["sections"]) {
+            for (auto ii : i["children"]) {
+                if (ii["type"].get<std::string>() == "module") {
+                    std::string module_html_path = this->dir + "/" + ii["source"].get<std::string>() + "/" + "module.html";
+                    std::string module_css_path = this->dir + "/" + ii["source"].get<std::string>() + "/" + "module.css";
+
+                    ResourceManager::load(module_html_path);
+                    ResourceManager::load(module_css_path);
+
+                    std::string module_html = ResourceManager::get(module_html_path);
+                    std::string module_css = ResourceManager::get(module_css_path);
+
+                    std::smatch sm;
+                    if (regex_search(module_html, sm, r)){
+                        for (int i=1; i<sm.size(); i++){
+                            std::cout << sm[i] << std::endl;
+
+                            for (auto iz : ii["args"]) {
+                                for (auto it = iz.begin(); it != iz.end(); ++it) {
+                                    std::cout << it.key() << " | " << it.value() << "\n";
+                                    module_html = this->replace_word(module_html, "{{"+it.key()+"}}", it.value());
+                                }
+                            }
+                        }
+                    }
+
+                    this->css += "\n" + module_css;
+
+                    page_content += "<section>" + module_html + "</section>\n";
+                }
+            }
+        }
+
         ResourceManager::write_new(this->title + "/" + ent1.first + ".html",
-                this->formatHTML(this->html)
+                this->replace_word(this->formatHTML(this->html), "{{body}}", page_content)
                 );
     }
 }
 
 void Website::generateCSS() {
-    this->addHeaderElement(
-            "<link rel='stylesheet' type='text/css' href='style.css'>"
-            );
-
     ResourceManager::write_new(
             this->site["title"].get<std::string>() + "/style.css",
             this->css
@@ -102,7 +138,21 @@ std::string Website::replace_word(std::string text, std::string word, std::strin
     return text;
 }
 
+std::string Website::jinjaFormat(std::string text, std::map<std::string, std::string> data) {
+    std::string new_text = text;
+
+    for(auto const &ent1 : data) {
+        new_text = this->replace_word(
+                new_text,
+                "{{"+ent1.first+"}}",
+                data.at(ent1.first)
+                );
+    }
+
+    return new_text;
+}
+
 void Website::compile() {
-    this->generateCSS();
     this->generatePages();
+    this->generateCSS();
 }

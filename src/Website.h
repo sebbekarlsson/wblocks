@@ -6,6 +6,7 @@
 #include "json/src/json.hpp"
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <regex>
 
 
 class Website {
@@ -29,6 +30,7 @@ class Website {
         void compile();
         std::string formatHTML(std::string html);
         std::string replace_word(std::string text, std::string word, std::string replacement);
+        std::string jinjaFormat(std::string text, std::map<std::string, std::string> data);
 
         Website(std::string directory);
 };
