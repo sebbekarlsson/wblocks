@@ -1,5 +1,12 @@
+/* GENERETED BY WEBSITECOMPILER, SHOULD NEVER BE TOUCHED */
+
+
 * {
     margin: 0;
     padding: 0;
     font-family: {{family}}, {{fallback-family}};
+}
+
+section {
+    margin-bottom: 1rem;
 }

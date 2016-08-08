@@ -7,6 +7,7 @@ Website::Website(std::string directory) {
     ResourceManager::load(this->dir + "/site.json");
     this->site = nlohmann::json::parse(ResourceManager::get(this->dir + "/site.json"));
 
+    std::cout << "[Initializing]: Creating directory: " << this->site["title"].get<std::string>() << std::endl;
     mkdir(
             this->site["title"].get<std::string>().c_str(),
             S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
@@ -70,6 +71,7 @@ void Website::generatePages() {
     for(auto const &ent1 : pages) {
         //std::cout << ent1.first << std::endl;
         //std::cout << pages.at(ent1.first) << std::endl;
+        std::cout << "[Generating Page]: " << ent1.first << std::endl;
 
         std::string page_content = "";
         nlohmann::json page_json = nlohmann::json::parse(pages.at(ent1.first));
@@ -89,8 +91,6 @@ void Website::generatePages() {
                     std::smatch sm;
                     if (regex_search(module_html, sm, r)){
                         for (int i=1; i<sm.size(); i++){
-                            std::cout << sm[i] << std::endl;
-
                             for (auto iz : ii["args"]) {
                                 for (auto it = iz.begin(); it != iz.end(); ++it) {
                                     std::string v = it.value();
@@ -101,6 +101,7 @@ void Website::generatePages() {
                                         v = ResourceManager::get(this->dir + "/" + v);
                                     }
 
+                                    std::cout << "[Generating Page]: " << ent1.first << " " << it.key() << ": " << v << std::endl;
                                     module_html = this->replace_word(module_html, "{{"+it.key()+"}}", v);
                                 }
                             }

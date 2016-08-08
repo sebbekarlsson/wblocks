@@ -1,0 +1,15 @@
+{
+    "sections": [
+        {
+            "children": [
+                {
+                    "type": "module",
+                    "source": "modules/text",
+                    "args": [
+                        {"text": "{{shards/greeting.html}}"}
+                    ]
+                }
+            ] 
+        }
+    ]
+}
