@@ -128,7 +128,7 @@ void Website::generatePages() {
 
                     this->css += "\n" + module_css;
 
-                    page_content += "<section>" + module_html + "</section>\n";
+                    page_content += "<section>\n" + module_html + "</section>\n";
                 }
             }
         }
