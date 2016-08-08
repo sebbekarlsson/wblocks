@@ -1,0 +1,26 @@
+{
+    "sections": [
+        {
+            "children": [
+                {
+                    "type": "module",
+                    "source": "modules/hero",
+                    "args": [
+                        {"text": "Welcome", "image": "images/yosemite.jpg"}
+                    ]
+                }
+            ]
+        },
+        {
+            "children": [
+                {
+                    "type": "module",
+                    "source": "modules/text",
+                    "args": [
+                        {"text": "<file processor='plugins/markdown'>shards/greetings.md</file>"}
+                    ]
+                }
+            ] 
+        }
+    ]
+}
