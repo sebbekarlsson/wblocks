@@ -19,36 +19,36 @@ bool WebsiteCompiler::compile(std::string directory) {
     nlohmann::json font = nlohmann::json::parse(ResourceManager::get(directory + "/" + site["font"].get<std::string>()));
 
     /* Add css to header */
-    html_text = WebsiteCompiler::replace_word(
-            html_text,
+    ResourceManager::write("src/shards/html.html", WebsiteCompiler::replace_word(
+            ResourceManager::get("src/shards/html.html"),
             "{{head}}",
             "\
             <link rel='stylesheet' type='text/css' href='style.css'>\n\
             {{head}}\
             "
-            );
+            ));
 
     /* Add font to header */
-    html_text = WebsiteCompiler::replace_word(
-            html_text,
+    ResourceManager::write("src/shards/html.html", WebsiteCompiler::replace_word(
+            ResourceManager::get("src/shards/html.html"),
             "{{head}}",
             "\
             <link rel='stylesheet' type='text/css' href='" + font["link"].get<std::string>() + "'>\n\
             {{head}}\
             "
-            );
+            ));
 
     /* Add font to css */
-    css_text = WebsiteCompiler::replace_word(
-            css_text,
+    ResourceManager::write("src/shards/style.css", WebsiteCompiler::replace_word(
+            ResourceManager::get("src/shards/style.css"),
             "{{family}}",
             font["family"].get<std::string>()
-            );
-    css_text = WebsiteCompiler::replace_word(
-            css_text,
+            ));
+    ResourceManager::write("src/shards/style.css", WebsiteCompiler::replace_word(
+            ResourceManager::get("src/shards/style.css"),
             "{{fallback-family}}",
             font["fallback-family"].get<std::string>()
-            );
+            ));
 
     /* Create project directory using title in site.json */
     mkdir(site["title"].get<std::string>().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
@@ -58,14 +58,14 @@ bool WebsiteCompiler::compile(std::string directory) {
     for(auto i : pages) {
         ResourceManager::write_new(
                 site["title"].get<std::string>() + "/" + WebsiteCompiler::replace_word(i, ".json", ".html"),
-                html_text
+                ResourceManager::get("src/shards/html.html")
                 ); 
     }
 
     /* Write css file */
     ResourceManager::write_new(
                 site["title"].get<std::string>() + "/style.css",
-                css_text
+                ResourceManager::get("src/shards/style.css")
                 );
 
     return true;
