@@ -24,6 +24,7 @@ class Website {
         void addHeaderElement(std::string text);
         bool addPage(std::string title, std::string content);
         void generatePages();
+        void generateCSS();
         void setFont(std::string family, std::string fallbackFamily);
         std::string formatHTML(std::string html);
         std::string replace_word(std::string text, std::string word, std::string replacement);

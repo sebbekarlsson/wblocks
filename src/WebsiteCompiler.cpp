@@ -19,12 +19,7 @@ bool WebsiteCompiler::compile(Website * website) {
 
 
     website->generatePages();
-
-    /* Write css file */
-    ResourceManager::write_new(
-            website->site["title"].get<std::string>() + "/style.css",
-            website->css
-            );
+    website->generateCSS();
 
     return true;
 }

@@ -16,6 +16,8 @@ Website::Website(std::string directory) {
     this->css = ResourceManager::get("src/shards/style.css");
     this->font = nlohmann::json::parse(ResourceManager::get(this->dir + "/" + this->site["font"].get<std::string>()));
 
+    this->setFont(this->font["family"].get<std::string>(), this->font["fallback-family"].get<std::string>());
+
     mkdir(
             this->site["title"].get<std::string>().c_str(),
             S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
@@ -29,8 +31,8 @@ void Website::addHeaderElement(std::string text) {
 void Website::setFont(std::string family, std::string fallbackFamily) {
     this->family = family;
     this->fallbackFamily = fallbackFamily;
-    this->css = this->replace_word(this->css, "{{family}", this->family);
-    this->css = this->replace_word(this->css, "{{fallback-family}", this->fallbackFamily);
+    this->css = this->replace_word(this->css, "{{family}}", this->family);
+    this->css = this->replace_word(this->css, "{{fallback-family}}", this->fallbackFamily);
 }
 
 bool Website::addPage(std::string title, std::string content) {
@@ -44,6 +46,13 @@ void Website::generatePages() {
                 this->formatHTML(pages.at(ent1.first))
                 );
     }
+}
+
+void Website::generateCSS() {
+    ResourceManager::write_new(
+            this->site["title"].get<std::string>() + "/style.css",
+            this->css
+            );
 }
 
 std::string Website::formatHTML(std::string html) {
