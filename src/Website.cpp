@@ -23,22 +23,35 @@ Website::Website(std::string directory) {
 
     std::vector<std::string> _pages = this->site["pages"].get<std::vector<std::string>>();
     for(auto i : _pages) {
+        if (!ResourceManager::fileExists(this->dir + "/" + i)) { continue; }
         ResourceManager::load(this->dir + "/" + i);
+        if (
+                ResourceManager::get(this->dir + "/" + i).empty() ||
+                ResourceManager::get(this->dir + "/" + i) == ""
+        ) { continue; }
         this->pages[
             this->replace_word(i, ".json", "")
         ] = ResourceManager::get(this->dir + "/" + i);
     }
 
-    this->setFont(this->font["family"].get<std::string>(), this->font["fallback-family"].get<std::string>());
+    this->setFont(
+            this->font["family"].get<std::string>(),
+            this->font["fallback-family"].get<std::string>(),
+            this->font["link"].get<std::string>()
+            );
 }
 
 void Website::addHeaderElement(std::string text) {
     this->header.push_back(text);
 }
 
-void Website::setFont(std::string family, std::string fallbackFamily) {
+void Website::setFont(std::string family, std::string fallbackFamily, std::string link) {
     this->family = family;
     this->fallbackFamily = fallbackFamily;
+    this->addHeaderElement(
+            "<link rel='stylesheet' type='text/css' href='"\
+            + link + "'>"
+            );
     this->css = this->replace_word(this->css, "{{family}}", this->family);
     this->css = this->replace_word(this->css, "{{fallback-family}}", this->fallbackFamily);
 }
@@ -49,15 +62,22 @@ bool Website::addPage(std::string title, std::string content) {
 
 void Website::generatePages() {
     for(auto const &ent1 : pages) {
-        std::cout << ent1.first << std::endl;
-        std::cout << pages.at(ent1.first) << std::endl;
+        //std::cout << ent1.first << std::endl;
+        //std::cout << pages.at(ent1.first) << std::endl;
+        
+
+        nlohmann::json page_json = nlohmann::json::parse(pages.at(ent1.first));
         ResourceManager::write_new(this->title + "/" + ent1.first + ".html",
-                this->formatHTML(pages.at(ent1.first))
+                this->formatHTML(this->html)
                 );
     }
 }
 
 void Website::generateCSS() {
+    this->addHeaderElement(
+            "<link rel='stylesheet' type='text/css' href='style.css'>"
+            );
+
     ResourceManager::write_new(
             this->site["title"].get<std::string>() + "/style.css",
             this->css
@@ -80,4 +100,9 @@ std::string Website::replace_word(std::string text, std::string word, std::strin
     text.replace(start_pos, word.length(), replacement);
 
     return text;
+}
+
+void Website::compile() {
+    this->generateCSS();
+    this->generatePages();
 }
