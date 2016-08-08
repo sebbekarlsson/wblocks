@@ -6,3 +6,5 @@
 *.swm
 *.gch
 *.h.gch
+./example-site
+test-site
