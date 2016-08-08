@@ -1,6 +1,6 @@
 #include "WebsiteCompiler.h"
 
 int main(int argc, char* argv[]) {
-    std::cout << argv[1] << std::endl;
+    WebsiteCompiler::compile(argv[1]);
     return 0;
 }
