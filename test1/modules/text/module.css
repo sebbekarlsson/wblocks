@@ -5,4 +5,9 @@
 
 .text p {
     margin-bottom: 1rem;
+    font-weight: 200;
+}
+
+.text h1, .text h2, .text h3 {
+    font-weight: 700;
 }
