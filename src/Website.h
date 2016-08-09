@@ -32,7 +32,6 @@ class Website {
         void compile();
         std::string formatHTML(std::string html);
         std::string replace_word(std::string text, std::string word, std::string replacement);
-        std::string jinjaFormat(std::string text, std::map<std::string, std::string> data);
 
         Website(std::string directory);
 };

@@ -170,20 +170,6 @@ std::string Website::replace_word(std::string text, std::string word, std::strin
     return text;
 }
 
-std::string Website::jinjaFormat(std::string text, std::map<std::string, std::string> data) {
-    std::string new_text = text;
-
-    for(auto const &ent1 : data) {
-        new_text = this->replace_word(
-                new_text,
-                "{{"+ent1.first+"}}",
-                data.at(ent1.first)
-                );
-    }
-
-    return new_text;
-}
-
 void Website::compile() {
     this->generatePages();
     this->generateCSS();
