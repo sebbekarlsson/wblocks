@@ -6,21 +6,10 @@
                     "type": "module",
                     "source": "modules/hero",
                     "args": [
-                        {"text": "Welcome", "image": "images/yosemite.jpg"}
+                        {"text": "<h1>Welcome</h1><p>WebsiteCompiler</p>", "image": "images/giphy.gif"}
                     ]
                 }
             ]
-        },
-        {
-            "children": [
-                {
-                    "type": "module",
-                    "source": "modules/text",
-                    "args": [
-                        {"text": "{{shards/greeting.html}}"}
-                    ]
-                }
-            ] 
         }
     ]
 }
