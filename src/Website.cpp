@@ -85,6 +85,12 @@ void Website::generatePages() {
     this->addHeaderElement(
             "<link rel='stylesheet' type='text/css' href='style.css'>"
             );
+    this->addHeaderElement(
+            "<meta name='viewport' content='width=device-width, initial-scale=1'>"
+            );
+    this->addHeaderElement(
+            "<meta charset='UTF-8'>"
+            );
 
     for(auto const &ent1 : pages) {
         //std::cout << ent1.first << std::endl;
