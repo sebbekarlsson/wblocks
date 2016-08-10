@@ -13,11 +13,11 @@ void printAvailableCommands(std::map<std::string, int> commands) {
 
 void generateBoilerPlate(std::string directory) {
     std::cout << "[Boilerplating]: Gathering templates..." << std::endl;
-    ResourceManager::load("src/shards/site.json");
-    ResourceManager::load("src/shards/index.json");
-    ResourceManager::load("src/shards/fonts/lato.json");
-    ResourceManager::load("src/shards/modules/hero/module.css");
-    ResourceManager::load("src/shards/modules/hero/module.html");
+    ResourceManager::load("/etc/websitecompiler/shards/site.json");
+    ResourceManager::load("/etc/websitecompiler/shards/index.json");
+    ResourceManager::load("/etc/websitecompiler/shards/fonts/lato.json");
+    ResourceManager::load("/etc/websitecompiler/shards/modules/hero/module.css");
+    ResourceManager::load("/etc/websitecompiler/shards/modules/hero/module.html");
 
     std::cout << "[Boilerplating]: Creating directories..." << std::endl;
     mkdir(
@@ -39,17 +39,17 @@ void generateBoilerPlate(std::string directory) {
 
     std::cout << "[Boilerplating]: Writing boilerplate files..." << std::endl;
     ResourceManager::write_new(directory + "/site.json",
-            ResourceManager::get("src/shards/site.json"));
+            ResourceManager::get("/etc/websitecompiler/shards/site.json"));
     ResourceManager::write_new(directory + "/index.json",
-            ResourceManager::get("src/shards/index.json"));
+            ResourceManager::get("/etc/websitecompiler/shards/index.json"));
 
     ResourceManager::write_new(directory + "/fonts/lato.json",
-            ResourceManager::get("src/shards/fonts/lato.json"));
+            ResourceManager::get("/etc/websitecompiler/shards/fonts/lato.json"));
 
     ResourceManager::write_new(directory + "/modules/hero/module.css",
-            ResourceManager::get("src/shards/modules/hero/module.css"));
+            ResourceManager::get("/etc/websitecompiler/shards/modules/hero/module.css"));
     ResourceManager::write_new(directory + "/modules/hero/module.html",
-            ResourceManager::get("src/shards/modules/hero/module.html"));
+            ResourceManager::get("/etc/websitecompiler/shards/modules/hero/module.html"));
 
     std::cout << "[Boilerplating]: Done! > " << directory << std::endl;
 }

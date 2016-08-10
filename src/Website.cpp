@@ -31,13 +31,13 @@ Website::Website(std::string directory) {
     }
     closedir(dpdf);
 
-    ResourceManager::load("src/shards/html.html");
-    ResourceManager::load("src/shards/style.css");
+    ResourceManager::load("/etc/websitecompiler/shards/html.html");
+    ResourceManager::load("/etc/websitecompiler/shards/style.css");
     ResourceManager::load(this->dir + "/" + this->site["font"].get<std::string>());
 
     this->title = this->site["title"].get<std::string>(); 
-    this->html = ResourceManager::get("src/shards/html.html");
-    this->css = ResourceManager::get("src/shards/style.css");
+    this->html = ResourceManager::get("/etc/websitecompiler/shards/html.html");
+    this->css = ResourceManager::get("/etc/websitecompiler/shards/style.css");
     this->font = nlohmann::json::parse(ResourceManager::get(this->dir + "/" + this->site["font"].get<std::string>()));
 
     std::vector<std::string> _pages = this->site["pages"].get<std::vector<std::string>>();
