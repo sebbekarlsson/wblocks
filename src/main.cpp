@@ -1,4 +1,5 @@
 #include "Website.h"
+#include "PackageManager.h"
 #include <string>
 
 
@@ -10,6 +11,9 @@ void printAvailableCommands(std::map<std::string, int> commands) {
 }
 
 int main(int argc, char* argv[]) {
+    PackageManager* packagemanager = new PackageManager();
+    packagemanager->downloadPackage();
+
     std::map<std::string, int> commands;
     commands["compile"] = 1;
     commands["install"] = 2;
