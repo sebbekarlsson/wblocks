@@ -10,7 +10,6 @@ void printAvailableCommands(std::map<std::string, int> commands) {
 }
 
 int main(int argc, char* argv[]) {
-
     std::map<std::string, int> commands;
     commands["compile"] = 1;
 
