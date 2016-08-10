@@ -11,9 +11,6 @@ void printAvailableCommands(std::map<std::string, int> commands) {
 }
 
 int main(int argc, char* argv[]) {
-    PackageManager* packagemanager = new PackageManager();
-    packagemanager->downloadPackage();
-
     std::map<std::string, int> commands;
     commands["compile"] = 1;
     commands["install"] = 2;
@@ -44,7 +41,11 @@ int main(int argc, char* argv[]) {
                 if (argc < 3) {
                     std::cout << "No module was specified" << std::endl;
                     std::cout << "Usage: websitecompiler install <module>" << std::endl;
+                    return 0;
                 }
+
+                PackageManager* packagemanager = new PackageManager();
+                packagemanager->downloadPackage(argv[2]);
                 return 0;
             }
         break;
