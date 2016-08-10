@@ -8,3 +8,5 @@
 *.h.gch
 ./example-site
 test-site
+./websitecompiler
+websitecompiler
