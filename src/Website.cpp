@@ -60,10 +60,22 @@ Website::Website(std::string directory) {
             );
 }
 
+/**
+ * Add element to the header.
+ *
+ * @param String text
+ */
 void Website::addHeaderElement(std::string text) {
     this->header.push_back(text);
 }
 
+/**
+ * Set the font of the website.
+ *
+ * @param String family
+ * @param String fallbackFamily
+ * @param String link
+ */
 void Website::setFont(std::string family, std::string fallbackFamily, std::string link) {
     this->family = family;
     this->fallbackFamily = fallbackFamily;
@@ -75,10 +87,19 @@ void Website::setFont(std::string family, std::string fallbackFamily, std::strin
     this->css = this->replace_word(this->css, "{{fallback-family}}", this->fallbackFamily);
 }
 
+/**
+ * Add a page to the website.
+ *
+ * @param String title
+ * @param String content
+ */
 bool Website::addPage(std::string title, std::string content) {
     this->pages.insert(std::pair<std::string, std::string>(title, content));
 }
 
+/**
+ * Generate all pages into physical files.
+ */
 void Website::generatePages() {
     const std::regex r("\\{\\{(.*)}}");
 
@@ -145,6 +166,9 @@ void Website::generatePages() {
     }
 }
 
+/**
+ * Generete the physical CSS file.
+ */
 void Website::generateCSS() {
     ResourceManager::write_new(
             this->site["title"].get<std::string>() + "/style.css",
@@ -152,6 +176,11 @@ void Website::generateCSS() {
             );
 }
 
+/**
+ * Format page HTML, adding the header etc.
+ *
+ * @param String _html
+ */
 std::string Website::formatHTML(std::string _html) {
     std::string header_final = "";
     for(auto i : header) {
@@ -161,6 +190,9 @@ std::string Website::formatHTML(std::string _html) {
     return this->replace_word(_html, "{{head}}", header_final);
 }
 
+/**
+ * Replace a word in a String with another word
+ */
 std::string Website::replace_word(std::string text, std::string word, std::string replacement) {
     size_t start_pos = text.find(word);
     if(start_pos == std::string::npos)
@@ -170,6 +202,11 @@ std::string Website::replace_word(std::string text, std::string word, std::strin
     return text;
 }
 
+/**
+ * Create the physical website.
+ * This function is a wrapper that does all the necessary steps to "compile"
+ * the website.
+ */
 void Website::compile() {
     this->generatePages();
     this->generateCSS();
