@@ -1,0 +1,7 @@
+{
+    "title": "the-name-of-your-site",
+    "font": "fonts/lato.json",
+    "pages": [
+        "index.json"
+    ]
+}
