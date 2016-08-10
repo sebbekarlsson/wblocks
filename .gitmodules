@@ -4,6 +4,3 @@
 [submodule "src/ResourceManager"]
 	path = src/ResourceManager
 	url = git@github.com:sebbekarlsson/ResourceManager.git
-[submodule "src/cpr"]
-	path = src/cpr
-	url = https://github.com/whoshuu/cpr.git
