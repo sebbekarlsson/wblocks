@@ -51,7 +51,7 @@
 > the main one)
 > * link - (The link/url/location to the font)
 >
-> If you used to "boil" command, you should already see a font-config
+> If you used the "boil" command, you should already see a font-config
 > inside of the
 > fonts folder, this config is called "lato.json".
 
