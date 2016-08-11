@@ -88,3 +88,8 @@
 >
 > To view the generated/compiled/transpiled website, simply open the index.html
 > file using any browser you want.
+
+# Other
+> To see available commands, just run it without any arguments:
+
+        websitecompiler
