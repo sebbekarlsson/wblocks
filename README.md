@@ -1,5 +1,5 @@
 # Website Compiler
-> Generate websites using css/html modules and json.
+> Generate websites using css/html/js modules and json.
 
 ## About
 > WebsiteCompiler is a lightweight program written in C++, it is designed to
