@@ -9,6 +9,6 @@ rm -rf /etc/websitecompiler
 mkdir /etc/websitecompiler
 
 echo "Moving necessary files to directory"
-cp src/shards /etc/websitecompiler/. -r
+cp -R src/shards /etc/websitecompiler/shards
 
 echo "Done"

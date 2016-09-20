@@ -1,5 +1,5 @@
 #include "Website.h"
-#include "PackageManager.h"
+//#include "PackageManager.h"
 #include "ResourceManager/ResourceManager.h"
 #include <string>
 
@@ -36,6 +36,10 @@ void generateBoilerPlate(std::string directory) {
             (directory + "/modules/hero").c_str(),
             S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
          );
+    mkdir(
+            (directory + "/images").c_str(),
+            S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
+         );
 
     std::cout << "[Boilerplating]: Writing boilerplate files..." << std::endl;
     ResourceManager::write_new(directory + "/site.json",
@@ -57,7 +61,7 @@ void generateBoilerPlate(std::string directory) {
 int main(int argc, char* argv[]) {
     std::map<std::string, int> commands;
     commands["compile"] = 1;
-    commands["install"] = 2;
+    //commands["install"] = 2;
     commands["boil"] = 3;
 
     if(argc < 2) {
@@ -81,7 +85,7 @@ int main(int argc, char* argv[]) {
                 return 0;
             }
         break;
-        case 2:
+        /*case 2:
             {
                 if (argc < 3) {
                     std::cout << "No module was specified" << std::endl;
@@ -93,7 +97,7 @@ int main(int argc, char* argv[]) {
                 packagemanager->downloadPackage(argv[2]);
                 return 0;
             }
-        break;
+        break;*/
         case 3:
             {
                 if (argc < 3) {
