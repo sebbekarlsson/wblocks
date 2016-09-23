@@ -58,7 +58,8 @@ Website::Website(std::string directory) {
                 )
             );
 
-    std::vector<std::string> _pages = this->site["pages"].get<std::vector<std::string>>();
+    std::vector<std::string> _pages\
+        = this->site["pages"].get<std::vector<std::string>>();
     for(auto i : _pages) {
         if (!ResourceManager::fileExists(this->dir + "/" + i)) { continue; }
 
