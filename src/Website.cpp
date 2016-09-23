@@ -57,8 +57,8 @@ Website::Website(std::string directory) {
     this->html = ResourceManager::get("/etc/websitecompiler/shards/html.html");
     this->css = ResourceManager::get("/etc/websitecompiler/shards/style.css");
     this->font = nlohmann::json::parse(
-                ResourceManager::get(
-                    this->dir + "/" + this->site["font"].get<std::string>()
+            ResourceManager::get(
+                this->dir + "/" + this->site["font"].get<std::string>()
                 )
             );
 
@@ -138,6 +138,70 @@ bool Website::addPage(
     this->pages.insert(std::pair<std::string, std::string>(title, content));
 }
 
+std::string Website::addChildren(nlohmann::json json_obj) {
+    const std::regex r("\\{\\{(.*)}}");
+    std::string page_content = "";
+
+    for (auto ii : json_obj["children"]) {
+        if (ii["type"].get<std::string>() == "module") {
+            std::string module_html_path = this->dir +
+                "/" +
+                ii["source"].get<std::string>() +
+                "/" +
+                "module.html";
+            std::string module_css_path = this->dir +
+                "/" +
+                ii["source"].get<std::string>() +
+                "/" +
+                "module.css";
+
+            ResourceManager::load(module_html_path);
+            ResourceManager::load(module_css_path);
+
+            std::string module_html = ResourceManager::get(
+                    module_html_path
+                    );
+            std::string module_css = ResourceManager::get(
+                    module_css_path
+                    );
+
+            // Temporary solution for parsing and applying jinja
+            // variables.
+            std::smatch sm;
+            if (regex_search(module_html, sm, r)){
+                for (int i=1; i<sm.size(); i++){
+                    for (auto iz : ii["args"]) {
+                        for (auto it = iz.begin(); it != iz.end(); ++it) {
+                            std::string v = it.value();
+                            if (v.find("{{") != std::string::npos) {
+                                v = this->replace_word(v, "{{", "");
+                                v = this->replace_word(v, "}}", "");
+                                ResourceManager::load(
+                                        this->dir + "/" + v
+                                        );
+                                v = ResourceManager::get(
+                                        this->dir + "/" + v
+                                        );
+                            }
+
+                            module_html = this->replace_word(
+                                    module_html,
+                                    "{{"+it.key()+"}}",
+                                    v
+                                    );
+                        }
+                    }
+                }
+            }
+
+            this->css += "\n" + module_css;
+            page_content += "<section>\n" + module_html + this->addChildren(ii) + "</section>\n";
+        }
+    }
+
+    return page_content;
+}
+
 /**
  * Generate all pages into physical files.
  */
@@ -157,76 +221,15 @@ void Website::generatePages() {
     for(auto const &ent1 : pages) {
         //std::cout << ent1.first << std::endl;
         //std::cout << pages.at(ent1.first) << std::endl;
+        
         std::cout << "[Generating Page]: " << ent1.first << std::endl;
 
-        std::string page_content = "";
+        
         nlohmann::json page_json = nlohmann::json::parse(pages.at(ent1.first));
-
+        
+        std::string page_content = "";
         for(auto i : page_json["sections"]) {
-            for (auto ii : i["children"]) {
-                if (ii["type"].get<std::string>() == "module") {
-                    std::string module_html_path = this->dir +
-                        "/" +
-                        ii["source"].get<std::string>() +
-                        "/" +
-                        "module.html";
-                    std::string module_css_path = this->dir +
-                        "/" +
-                        ii["source"].get<std::string>() +
-                        "/" +
-                        "module.css";
-
-                    ResourceManager::load(module_html_path);
-                    ResourceManager::load(module_css_path);
-
-                    std::string module_html = ResourceManager::get(
-                            module_html_path
-                            );
-                    std::string module_css = ResourceManager::get(
-                            module_css_path
-                            );
-
-                    // Temporary solution for parsing and applying jinja
-                    // variables.
-                    std::smatch sm;
-                    if (regex_search(module_html, sm, r)){
-                        for (int i=1; i<sm.size(); i++){
-                            for (auto iz : ii["args"]) {
-                                for (auto it = iz.begin(); it != iz.end(); ++it) {
-                                    std::string v = it.value();
-                                    if (v.find("{{") != std::string::npos) {
-                                        v = this->replace_word(v, "{{", "");
-                                        v = this->replace_word(v, "}}", "");
-                                        ResourceManager::load(
-                                                this->dir + "/" + v
-                                                );
-                                        v = ResourceManager::get(
-                                                this->dir + "/" + v
-                                                );
-                                    }
-
-                                    std::cout << "[Generating Page]: " <<
-                                        ent1.first <<
-                                        " " <<
-                                        it.key() <<
-                                        ": " <<
-                                        v <<
-                                        std::endl;
-
-                                    module_html = this->replace_word(
-                                            module_html,
-                                            "{{"+it.key()+"}}",
-                                            v
-                                            );
-                                }
-                            }
-                        }
-                    }
-
-                    this->css += "\n" + module_css;
-                    page_content += "<section>\n" + module_html + "</section>\n";
-                }
-            }
+            page_content += addChildren(i);
         }
 
         ResourceManager::write_new(this->title + "/" + ent1.first + ".html",
