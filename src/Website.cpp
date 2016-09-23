@@ -24,12 +24,16 @@ Website::Website(std::string directory) {
          );
 
     // move files from images to new images location
-    std::cout << "[Initializing]: Moving images: " << std::endl;
     DIR *dpdf;
     struct dirent *epdf;
     dpdf = opendir((this->dir + "/images").c_str());
     if (dpdf != NULL){
-        while (epdf = readdir(dpdf)){
+        while (epdf = readdir(dpdf)) {
+            std::cout <<
+                "[Initializing]: Moving image: " <<
+                epdf->d_name <<
+                std::endl;
+
             std::ifstream src(
                     this->dir + "/images/" + epdf->d_name, std::ios::binary
                     );
