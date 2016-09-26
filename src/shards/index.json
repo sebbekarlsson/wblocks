@@ -4,7 +4,7 @@
             "children": [
                 {
                     "type": "module",
-                    "source": "modules/hero",
+                    "source": "modules/wc-hero-module",
                     "args": [
                         {"text": "<h1>Welcome</h1><p>WebsiteCompiler</p>", "color": "#3498db"}
                     ]

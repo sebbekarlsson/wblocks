@@ -4,3 +4,9 @@
 [submodule "src/ResourceManager"]
 	path = src/ResourceManager
 	url = git@github.com:sebbekarlsson/ResourceManager.git
+[submodule "src/shards/modules/wc-hero-module"]
+	path = src/shards/modules/wc-hero-module
+	url = https://github.com/sebbekarlsson/wc-hero-module.git
+[submodule "blog/modules/wc-navbar-module"]
+	path = blog/modules/wc-navbar-module
+	url = https://github.com/sebbekarlsson/wc-navbar-module.git

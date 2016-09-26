@@ -195,7 +195,7 @@ std::string Website::addChildren(nlohmann::json json_obj) {
             }
 
             this->css += "\n" + module_css;
-            page_content += "<section>\n" + module_html + this->addChildren(ii) + "</section>\n";
+            page_content += "<section>\n" + module_html + "</section>\n";
         }
     }
 

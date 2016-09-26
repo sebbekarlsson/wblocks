@@ -16,8 +16,8 @@ void generateBoilerPlate(std::string directory) {
     ResourceManager::load("/etc/websitecompiler/shards/site.json");
     ResourceManager::load("/etc/websitecompiler/shards/index.json");
     ResourceManager::load("/etc/websitecompiler/shards/fonts/lato.json");
-    ResourceManager::load("/etc/websitecompiler/shards/modules/hero/module.css");
-    ResourceManager::load("/etc/websitecompiler/shards/modules/hero/module.html");
+    ResourceManager::load("/etc/websitecompiler/shards/modules/wc-hero-module/module.css");
+    ResourceManager::load("/etc/websitecompiler/shards/modules/wc-hero-module/module.html");
 
     std::cout << "[Boilerplating]: Creating directories..." << std::endl;
     mkdir(
@@ -33,7 +33,7 @@ void generateBoilerPlate(std::string directory) {
             S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
          );
     mkdir(
-            (directory + "/modules/hero").c_str(),
+            (directory + "/modules/wc-hero-module").c_str(),
             S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
          );
     mkdir(
@@ -50,10 +50,10 @@ void generateBoilerPlate(std::string directory) {
     ResourceManager::write_new(directory + "/fonts/lato.json",
             ResourceManager::get("/etc/websitecompiler/shards/fonts/lato.json"));
 
-    ResourceManager::write_new(directory + "/modules/hero/module.css",
-            ResourceManager::get("/etc/websitecompiler/shards/modules/hero/module.css"));
-    ResourceManager::write_new(directory + "/modules/hero/module.html",
-            ResourceManager::get("/etc/websitecompiler/shards/modules/hero/module.html"));
+    ResourceManager::write_new(directory + "/modules/wc-hero-module/module.css",
+            ResourceManager::get("/etc/websitecompiler/shards/modules/wc-hero-module/module.css"));
+    ResourceManager::write_new(directory + "/modules/wc-hero-module/module.html",
+            ResourceManager::get("/etc/websitecompiler/shards/modules/wc-hero-module/module.html"));
 
     std::cout << "[Boilerplating]: Done! > " << directory << std::endl;
 }
